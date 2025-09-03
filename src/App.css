@@ -6,9 +6,11 @@
   --color-text: #1f1f1f;
   --font-family-main: 'Open Sans', sans-serif;
 }
+html, body { box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; }
+*, *::before, *::after { box-sizing: inherit; }
 #root,
 #root > div {
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -22,7 +24,7 @@
   padding: 2rem 4vw;
 }
 .logo {
-  height: 80px;
+  height: 100px;
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
@@ -45,18 +47,24 @@
   letter-spacing: 1px;
 }
 body {
-   width: 100vw;
+  width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  display: block; /* anula el display:flex de index.css para evitar centrado global */
   overflow-x: hidden;
   font-family: var(--font-family-main);
-  font-size: var(--font-size-base);
-  color: var(--color-muted);
-  background: var(--background-main);
-  margin: 0;
+  color: var(--color-text);
+  background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Imágenes responsive por defecto */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 h1, h2, h3, h4, h5, h6 {
   color: #212121;
@@ -88,6 +96,8 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 
 }
+.card { width: min(280px, 100%); }
+.card img { width: 100%; height: auto; display: block; }
 .card:hover {
   box-shadow: 0 8px 32px #0003;
 }
@@ -103,7 +113,234 @@ h1, h2, h3, h4, h5, h6 {
   padding-bottom: 4rem;
   /* El borde ondulado se agrega abajo */
   clip-path: ellipse(100% 85% at 50% 100%);
+  overflow: visible;
 }
+/* Home hero: separa el contenido de la banda del header */
+.home-hero{ padding-top: 4.5rem; position: relative; z-index: 2; }
+/* Asegura que el contenido del hero esté por encima del asistente */
+.section-gradient > div { position: relative; z-index: 2; }
 .read-the-docs {
   color: #888;
+}
+/* ====== CONTACTO + MAPA  ====== */
+.yrg-contact-map{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 8px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 24px;
+  position: relative;
+}
+
+.yrg-contact{
+  background: transparent;
+}
+
+.yrg-title{
+  margin: 0 0 16px 0;
+  color: #fff; /* turquesa similar al ejemplo */
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.yrg-field{ margin: 14px 0; }
+.yrg-label{
+  color: #fff;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.yrg-btn{
+  display: inline-block;
+  margin-top: 16px;
+  background: #43aebd;         /* botón turquesa */
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 28px;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(0,0,0,.12);
+}
+
+.yrg-mapwrap iframe{
+  width: 100%;
+  height: 420px;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+}
+
+/* Etiqueta vertical RESERVA CITA (opcional) */
+.yrg-reserva{
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translate(60%, -50%) rotate(-90deg);
+  z-index: 9999;              /* siempre sobre todo */
+  background: #d953c0;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 12px 18px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 10px 18px rgba(0,0,0,.18);
+  letter-spacing: .5px;
+}
+@media (max-width: 1100px){
+  .yrg-reserva{
+    /* visible y reubicada en mobile */
+    display: inline-block;
+    top: auto;
+    bottom: 16px;
+    right: 16px;
+    transform: none;           /* sin rotación en mobile */
+    border-radius: 999px;      /* píldora redondeada */
+    padding: 10px 16px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px){
+  .yrg-reserva{
+    bottom: 12px;
+    right: 12px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 900px){
+  .yrg-contact-map{ grid-template-columns: 1fr; }
+}
+
+/* ====== BADGE GOOGLE EN EL FOOTER  ====== */
+.yrg-google-badge{
+  max-width: 1200px;
+  margin: 2px auto 2px;  
+  padding: 0 16px 8px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+}
+.yrg-google-badge > *{
+  grid-column: 1;               
+  justify-self: left;         
+  text-align: center;
+}
+.yrg-google{
+  font-size: 40px;
+  font-weight: 800;
+  background: linear-gradient(90deg,#fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.yrg-stars{ font-size: 28px; letter-spacing: 2px; color: #fff; text-shadow: 0 0 2px rgba(0,0,0,.2); }
+.yrg-caption{ color: #fff; opacity: .95; margin: 4px 0; text-align: right; }
+.yrg-link{
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+  opacity: .95;
+}
+@media (max-width: 900px){
+  .yrg-google-badge{ justify-items: center; text-align: center; }
+  .yrg-caption{ text-align: center; }
+}
+/* === 1) Fila de marca en el footer (logo + ©) === */
+.yrg-footer-brand{
+  max-width: 1200px;
+  margin: 12px auto 0;
+  padding: 0 16px;              /* mismo padding lateral que el bloque de contacto */
+  display: flex;
+  align-items: center;
+  gap: 12px;                    
+}
+footer .yrg-footer-brand .logo{ height: 56px; }   /* tamaño cómodo y alineado al botón */
+footer .yrg-footer-brand .yrg-copy{ margin: 0; font-weight: 600; }
+
+/* Redes sociales debajo del mapa, en la misma columna del mapa  */
+.yrg-social{
+  max-width: 1200px;
+  margin: 0 auto 0px;
+  padding: 0 4px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr; /* igual que el bloque del mapa */
+}
+.yrg-social__row{
+  grid-column: 2;            /* debajo del mapa */
+  justify-self: center;      /* centrado */
+  display: flex;
+  align-items: center;
+  gap: 12px;                  /* separación justa */
+  margin-top: 4px;
+}
+
+/* Botones sin fondo ni borde (solo el glifo blanco) */
+.yrg-social__btn{
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;   /* sin círculo */
+  box-shadow: none;          /* sin sombra */
+  color: #ffffff;            /* color del glifo */
+  line-height: 0;            /* evita saltos verticales */
+}
+.yrg-social__btn svg{
+  width: 40px;
+  height: 40px;
+  display: block;
+  fill: #ffffff !important;  /* fuerza blanco, por si quedaron reglas anteriores */
+}
+.yrg-social__btn:hover{ opacity: .85; }
+
+/* Anula cualquier color por marca anterior */
+.yrg-social__btn--ig svg,
+.yrg-social__btn--fb svg,
+.yrg-social__btn--wa svg{ fill: #ffffff !important; }
+
+@media (max-width: 900px){
+  .yrg-social{ grid-template-columns: 1fr; }
+  .yrg-social__row{ grid-column: 1; }
+}
+/* Asistente virtual en el hero */
+.yrg-assistant{
+  position: absolute;
+  bottom: 0;                          /* apoyada en la base del hero */
+  left: clamp(12px, 8vw, 220px);      /* posición como tu recuadro rojo */
+  height: min(62vh, 520px);           /* tamaño responsivo sin deformar */
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;               /* no tapa clics de los botones */
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,.25));
+}
+
+/* Estilos específicos de Área Paciente se movieron a src/pages/area-paciente.css */
+
+/* Ajustes móviles */
+@media (max-width: 768px) {
+  html, body { background: var(--color-primary); }
+  .header { padding: 1rem 4vw; }
+  .logo { height: 72px; }
+  .section-gradient { clip-path: none; padding-bottom: 5rem; padding-top: 2.5rem; justify-content: center; }
+  /* anula el margin-top inline negativo del hero en mobile */
+  .section-gradient { margin-top: 0 !important; }
+  /* mueve la asistente a la derecha y reduce tamaño */
+  .yrg-assistant { left: auto; right: clamp(12px, 4vw, 24px); height: min(38vh, 340px); }
+  .section-gradient h2 { font-size: clamp(1.6rem, 6vw, 2rem); line-height: 1.25; margin: 0 0 .5rem; text-align: center; }
+  .section-gradient p { font-size: clamp(1rem, 4.5vw, 1.15rem); line-height: 1.4; margin: 0 auto; max-width: 36ch; overflow-wrap: anywhere; text-align: center; }
+  .card { width: 100%; }
+  footer .logo { max-height: 64px; height: auto; }
+}
+
+/* Teléfonos pequeños */
+@media (max-width: 480px) {
+  .section-gradient { padding-bottom: 6.5rem; }
+  .section-gradient h2 { font-size: clamp(1.5rem, 7vw, 1.9rem); }
+  .section-gradient p { font-size: clamp(.98rem, 4.6vw, 1.1rem); }
+  /* Evita salto forzado que pueda cortar palabras */
+  .section-gradient p br { display: none; }
+  .yrg-assistant { right: clamp(8px, 4vw, 16px); height: min(32vh, 280px); }
 }

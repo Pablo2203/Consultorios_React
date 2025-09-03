@@ -1,0 +1,69 @@
+.reserva-hero{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 7rem;   /* baja un poco más el título */
+  padding-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+/* eleva la asistente un poco en esta página */
+.reserva-hero .yrg-assistant{ bottom: 80px; }
+
+/* usa la altura global de .yrg-assistant para mantener posición idéntica */
+
+.reserva-wrap{
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding-top: 4px;
+  padding-bottom: 24px;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  text-align: center;
+}
+.reserva-wrap h2{ color: var(--color-accent); margin: 0; }
+.reserva-wrap p{ margin: 0 0 .5rem; }
+
+.reserva-switch{ display: flex; gap: 8px; margin-top: .5rem; }
+.reserva-pill{ background: rgba(255,255,255,.9); color: var(--color-primary); }
+.reserva-pill.is-active{ background: #13a6b0; color: #fff; }
+
+.reserva-card{ padding: 20px; width: 100%; max-width: 520px; }
+.reserva-form{ padding-top: 0px; display: grid; gap: 12px; }
+.reserva-slot{ min-height: 76px; display: grid; align-items: start; }
+.reserva-field{ display: grid; gap: 6px; text-align: left; }
+.reserva-field input{
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  font-size: 1rem;
+}
+.reserva-field span{ font-weight: 600; }
+.reserva-field select{
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d9d9d9;
+  font-size: 1rem;
+}
+.reserva-hint{ color: #fff; opacity: .95; background: rgba(0,0,0,.08); border-radius: 10px; padding: 12px 14px; min-height: 56px; display: flex; align-items: center; justify-content: center; }
+
+/* Disclaimer sutil dentro del card */
+.reserva-disclaimer{
+  font-size: .92rem;
+  color: #405058;
+  background: rgba(255,255,255,.75);
+  border-left: 4px solid rgba(44,138,155,.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.reserva-links{ margin-top: 4px; }
+.reserva-links a{ color: #fff; font-weight: 700; }
+
+@media (max-width: 768px){
+  .reserva-hero{ padding-top: 2.5rem; padding-bottom: 1.5rem; padding-left: 1rem; }
+  /* ajustes móviles se heredan de App.css para .yrg-assistant */
+    .yrg-assistant--area{ right: clamp(12px, 4vw, 24px); left: auto; height: min(34vh, 300px); }
+
+}

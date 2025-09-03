@@ -8,17 +8,9 @@
   background-repeat: no-repeat; /* No repite la imagen */
 }
 
-.header img {
-    width: 70%;
-    height: 200px; /* Ajusta el valor */
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-
 .header::before {
   content: "";
-  position: absolute;
+  position: absolute; 
   inset: 0;
   background: rgba(255,255,255,0.6); /* Blanco con opacidad, ajusta a gusto */
   z-index: 1;
@@ -30,4 +22,17 @@
   display: flex;
   align-items: center;
   height: 100%;
+}
+
+/* Link clickeable para volver al inicio */
+.brand-link{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  .header { height: 160px; }
 }
