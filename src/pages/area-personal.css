@@ -1,0 +1,22 @@
+/* Héroe de Área Personal */
+.area-personal{
+  align-items: center;
+  justify-content: center;
+  padding-top: 4.5rem;     /* separa del header */
+  padding-bottom: 2rem;
+  padding-left: clamp(48px, 8vw, 360px);
+  position: relative;
+  z-index: 2;
+}
+
+/* Ajuste de tamaño del asistente para esta página */
+.yrg-assistant--area{
+  /* Unifica tamaño con el base (.yrg-assistant) */
+  height: min(62vh, 520px);
+}
+
+@media (max-width: 768px){
+  .area-personal{ padding-top: 2.5rem; padding-bottom: 1.5rem; padding-left: 1rem; }
+  /* Igual al tamaño mobile base de .yrg-assistant */
+  .yrg-assistant--area{ right: clamp(12px, 4vw, 24px); left: auto; height: min(38vh, 340px); }
+}

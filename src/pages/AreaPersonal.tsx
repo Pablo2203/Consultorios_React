@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../Header";
 import "../App.css";
-import "./area-paciente.css";
+import "./area-personal.css";
 import AssistantMedia from "../components/AssistantMedia";
-import asistenteVideo from "../assets/asistente_aplaudiendo_vp9alpha.webm";
+import asistenteVideo from "../assets/asistente_pensando_vp9alpha.webm";
 import asistentePng from "../assets/asistente_virtual.png";
 
 const AreaPaciente: React.FC = () => {
@@ -22,11 +22,11 @@ const AreaPaciente: React.FC = () => {
     <div style={{ height: "100%" }}>
       <Header />
 
-      {/* Hero Área Paciente */}
+      {/* Hero Área Personal */}
       <section
-        className="section-gradient area-paciente"
+        className="section-gradient area-personal"
         style={{
-          marginTop: "-128px",
+          marginTop: 0,
           minHeight: "72vh",
           display: "flex",
           flexDirection: "column",
@@ -52,7 +52,7 @@ const AreaPaciente: React.FC = () => {
             textAlign: "center",
           }}
         >
-          <h2 style={{ color: "var(--color-bg)", margin: "2px", paddingRight: "14rem", paddingTop: "5rem" }}>Área Paciente</h2>
+          <h2 style={{ color: "var(--color-bg)", margin: "2px", paddingRight: "14rem", paddingTop: "5rem" }}>Área Personal</h2>
           <p style={{ fontSize: "1.1rem", margin: 0, paddingRight: "14rem" }}>
             Ingresá con tu email y contraseña o registrate para comenzar.
           </p>

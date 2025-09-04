@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  height: 200px;
+  height: 120px;
   color: #fff;
   background-image: url('./assets/watermark.png');
   background-size: cover;         /* Hace la imagen más pequeña */

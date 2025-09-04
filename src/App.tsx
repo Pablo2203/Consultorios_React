@@ -4,6 +4,9 @@ import Header from "./Header.tsx";
 import logo from "./logo/logo.png";
 import "./App.css";
 import asistente from "./assets/asistente_virtual_saludo.webm";
+import imgPsiquiatria from "./images/psiquiatria.png";
+import imgPsicologia from "./images/psicologia.png";
+import imgCardiologia from "./images/cardiologia.png";
 
 
 
@@ -16,7 +19,7 @@ const App: React.FC = () => {
 <section 
   className="section-gradient home-hero" 
   style={{ 
-    marginTop: "-96px", /* empuja hacia arriba pero evita solape */
+    marginTop: 0,
     minHeight: "100vh", 
     display: "flex", 
     flexDirection: "column", 
@@ -39,8 +42,8 @@ const App: React.FC = () => {
             Profesionalidad, implicación e innovación.
           </p>
           <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center" }}>
-            <Link to="/area-paciente">
-              <button className="button" style={{ background: "#13a6b0" }}>Área Paciente</button>
+            <Link to="/area-personal">
+              <button className="button" style={{ background: "#13a6b0" }}>Área Personal</button>
             </Link>
             <Link to="/reservar-turno">
               <button className="button" style={{ background: "white", color: "var(--color-primary)" }}>Turnos</button>
@@ -53,18 +56,18 @@ const App: React.FC = () => {
       <section style={{ padding: "3rem 0", background: "var(--color-bg)" }}>
         <h2 style={{ textAlign: "center", color: "var(--color-primary)" }}>Nuestras Especialidades</h2>
         <div style={{ display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap", marginTop: "2rem" }}>
-          <div className="card">
-            <img src="src/images/psiquiatria.png" alt="Psiquiatría" />
-            <div style={{ padding: "1rem" }}>Psiquiatría</div>
-          </div>
-          <div className="card">
-            <img src="src/images/psicologia.png" alt="Psiquiatría" />
-            <div style={{ padding: "1rem" }}>Psicología</div>
-          </div>
-          <div className="card">
-            <img src="src/images/cardiologia.png" alt="Cardiología" />
-            <div style={{ padding: "1rem" }}>Cardiología</div>
-          </div>
+          <Link to="/profesionales/psiquiatria" className="card" style={{ textDecoration: "none", color: "inherit" }}>
+            <img src={imgPsiquiatria} alt="Psiquiatría" />
+            <div style={{ padding: "1rem", fontWeight: 700, textAlign: "center" }}>Psiquiatría</div>
+          </Link>
+          <Link to="/profesionales/psicologia" className="card" style={{ textDecoration: "none", color: "inherit" }}>
+            <img src={imgPsicologia} alt="Psicología" />
+            <div style={{ padding: "1rem", fontWeight: 700, textAlign: "center" }}>Psicología</div>
+          </Link>
+          <Link to="/profesionales/cardiologia" className="card" style={{ textDecoration: "none", color: "inherit" }}>
+            <img src={imgCardiologia} alt="Cardiología" />
+            <div style={{ padding: "1rem", fontWeight: 700, textAlign: "center" }}>Cardiología</div>
+          </Link>
         </div>
     
       </section>

@@ -77,7 +77,7 @@ const ReservarTurno: React.FC = () => {
       <section
         className="section-gradient reserva-hero"
         style={{
-          marginTop: "-128px",
+          marginTop: 0,
           minHeight: "72vh",
           display: "flex",
           flexDirection: "column",

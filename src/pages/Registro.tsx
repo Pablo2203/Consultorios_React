@@ -29,7 +29,7 @@ const Registro: React.FC = () => {
 
       <section
         className="section-gradient"
-        style={{ marginTop: "-128px", minHeight: "60vh", display: "flex", flexDirection: "column", justifyContent: "center" }}
+        style={{ marginTop: 0, minHeight: "60vh", display: "flex", flexDirection: "column", justifyContent: "center" }}
       >
         <AssistantMedia
           srcWebm={asistenteVideo}
@@ -41,7 +41,7 @@ const Registro: React.FC = () => {
         <div style={{ width: "min(100%, 720px)", margin: "0 auto", padding: "2rem" }}>
           <h2>Crear cuenta</h2>
           <p style={{ textAlign: "center", fontSize: "1.1rem" }}>
-            Completá tus datos para registrarte en el Área Paciente.
+            Completá tus datos para registrarte en el Área Personal.
           </p>
         </div>
       </section>
@@ -102,7 +102,7 @@ const Registro: React.FC = () => {
 
             <div style={{ marginTop: 12, fontSize: ".95rem" }}>
               ¿Ya tenés cuenta? {" "}
-              <Link to="/area-paciente" style={{ color: "var(--color-primary)", fontWeight: 700 }}>
+              <Link to="/area-personal" style={{ color: "var(--color-primary)", fontWeight: 700 }}>
                 Iniciar sesión
               </Link>
             </div>

@@ -317,7 +317,7 @@ footer .yrg-footer-brand .yrg-copy{ margin: 0; font-weight: 600; }
   filter: drop-shadow(0 12px 28px rgba(0,0,0,.25));
 }
 
-/* Estilos específicos de Área Paciente se movieron a src/pages/area-paciente.css */
+/* Estilos específicos de Área Personal se movieron a src/pages/area-personal.css */
 
 /* Ajustes móviles */
 @media (max-width: 768px) {
