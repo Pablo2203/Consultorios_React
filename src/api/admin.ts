@@ -1,0 +1,88 @@
+import type { CoverageType, Specialty } from "./appointments";
+
+export interface AppointmentResponse {
+  id: number;
+  professionalId: number | null;
+  specialty: Specialty;
+  startsAt: string | null;
+  endsAt: string | null;
+  status: "REQUESTED" | "SCHEDULED" | "CANCELLED" | "COMPLETED" | "NO_SHOW";
+  firstName: string;
+  lastName: string;
+  email: string | null;
+  phone: string | null;
+  coverageType: CoverageType | null;
+  healthInsurance: string | null;
+  preferredProfessional: string | null;
+  subject: string | null;
+  message: string | null;
+}
+
+export interface ScheduleAppointmentRequest {
+  professionalId: number;
+  startsAt: string; // LocalDateTime ISO, e.g. 2025-09-05T13:00:00
+  endsAt?: string | null; // optional; backend computes if null
+}
+
+export interface WhatsAppTemplateResponse {
+  text: string;
+  waLink: string;
+}
+
+const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || "";
+
+function authHeaders(): HeadersInit {
+  const token = (typeof localStorage !== "undefined" && localStorage.getItem("ADMIN_TOKEN")) || "";
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+function url(path: string) {
+  return new URL(path.replace(/^\//, ""), API_BASE || "/").toString();
+}
+
+export async function getRequestedAppointments(): Promise<AppointmentResponse[]> {
+  const res = await fetch(url("/api/admin/appointments/requests"), {
+    credentials: "include",
+    headers: { ...authHeaders() },
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} al listar solicitudes`);
+  return res.json();
+}
+
+export async function scheduleAppointment(
+  id: number,
+  body: ScheduleAppointmentRequest
+): Promise<AppointmentResponse> {
+  const res = await fetch(url(`/api/admin/appointments/${id}/schedule`), {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    credentials: "include",
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} al agendar`);
+  return res.json();
+}
+
+export async function getWhatsAppTemplate(id: number): Promise<WhatsAppTemplateResponse> {
+  const res = await fetch(url(`/api/admin/appointments/${id}/whatsapp-template`), {
+    credentials: "include",
+    headers: { ...authHeaders() },
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} obteniendo plantilla`);
+  return res.json();
+}
+
+export interface ProfessionalSummary {
+  id: number;
+  username: string;
+  email?: string;
+}
+
+export async function getProfessionals(): Promise<ProfessionalSummary[]> {
+  const res = await fetch(url("/api/admin/professionals"), {
+    credentials: "include",
+    headers: { ...authHeaders() },
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} listando profesionales`);
+  return res.json();
+}
