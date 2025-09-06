@@ -6,16 +6,34 @@ import "./area-personal.css";
 import AssistantMedia from "../components/AssistantMedia";
 import asistenteVideo from "../assets/asistente_pensando_vp9alpha.webm";
 import asistentePng from "../assets/asistente_virtual.png";
+import { login } from "../api/auth";
 
 const AreaPaciente: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: integrar con backend / API auth
-    console.log("login", { email, password });
-    alert("Función de login pendiente de integración.");
+    if (loading) return;
+    setError(null);
+    try {
+      setLoading(true);
+      // Se permite login con email en backend (username-or-email)
+      const res = await login(email, password);
+      localStorage.setItem("ADMIN_TOKEN", res.token);
+      localStorage.setItem("ADMIN_ROLES", JSON.stringify(res.roles || []));
+      const roles = (res.roles || []).map((r) => r.toUpperCase());
+      if (roles.includes("ADMIN")) window.location.href = "/admin/appointments";
+      else if (roles.includes("PROFESSIONAL")) window.location.href = "/professional/agenda";
+      else window.location.href = "/";
+    } catch (e: any) {
+      setError(e?.message || "Credenciales inválidas");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,8 +113,9 @@ const AreaPaciente: React.FC = () => {
                   />
                 </label>
                 <button className="button" type="submit" style={{ marginTop: 6 }}>
-                  Ingresar
+                  {loading ? "Ingresando…" : "Ingresar"}
                 </button>
+                {error && <div style={{ color: "#b00020" }}>{error}</div>}
               </form>
               <div style={{ marginTop: 10, fontSize: ".95rem", textAlign: "center", color: "#555" }}>
                 ¿No tenés cuenta? {" "}
