@@ -11,6 +11,8 @@ import AdminPendingProfessionals from './pages/AdminPendingProfessionals'
 import AdminAppointments from './pages/AdminAppointments'
 import AdminProfessionals from './pages/AdminProfessionals'
 import AdminProfessionalProfile from './pages/AdminProfessionalProfile'
+import ProfessionalAgenda from './pages/ProfessionalAgenda'
+import AdminAgenda from './pages/AdminAgenda'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,6 +27,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/professionals" element={<AdminProfessionals />} />
         <Route path="/admin/professionals/:userId/profile" element={<AdminProfessionalProfile />} />
+        <Route path="/professional/agenda" element={<ProfessionalAgenda />} />
+        <Route path="/admin/agenda" element={<AdminAgenda />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
