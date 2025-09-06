@@ -86,3 +86,21 @@ export async function getProfessionals(): Promise<ProfessionalSummary[]> {
   if (!res.ok) throw new Error(`Error ${res.status} listando profesionales`);
   return res.json();
 }
+
+export async function getAppointmentsByProfessional(
+  userId: number,
+  fromIso: string,
+  toIso: string
+) {
+  const res = await fetch(url(`/api/admin/professionals/${userId}/appointments?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`), {
+    credentials: "include",
+    headers: { ...authHeaders() },
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} listando agenda`);
+  return res.json();
+}
+
+export function exportAppointmentsCsvByAdmin(userId: number, fromIso: string, toIso: string) {
+  const u = url(`/api/admin/professionals/${userId}/appointments/export?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`);
+  window.open(u, "_blank");
+}
