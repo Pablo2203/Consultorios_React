@@ -6,34 +6,16 @@ import "./area-personal.css";
 import AssistantMedia from "../components/AssistantMedia";
 import asistenteVideo from "../assets/asistente_pensando_vp9alpha.webm";
 import asistentePng from "../assets/asistente_virtual.png";
-import { login } from "../api/auth";
 
 const AreaPaciente: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const onSubmit = async (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
-    setError(null);
-    try {
-      setLoading(true);
-      // Se permite login con email en backend (username-or-email)
-      const res = await login(email, password);
-      localStorage.setItem("ADMIN_TOKEN", res.token);
-      localStorage.setItem("ADMIN_ROLES", JSON.stringify(res.roles || []));
-      const roles = (res.roles || []).map((r) => r.toUpperCase());
-      if (roles.includes("ADMIN")) window.location.href = "/admin/appointments";
-      else if (roles.includes("PROFESSIONAL")) window.location.href = "/professional/agenda";
-      else window.location.href = "/";
-    } catch (e: any) {
-      setError(e?.message || "Credenciales inválidas");
-    } finally {
-      setLoading(false);
-    }
+    // TODO: integrar con backend / API auth
+    console.log("login", { email, password });
+    alert("Función de login pendiente de integración.");
   };
 
   return (
@@ -81,13 +63,13 @@ const AreaPaciente: React.FC = () => {
               <h3 style={{ margin: 0, color: "var(--color-primary)" }}>Iniciar sesión</h3>
               <form onSubmit={onSubmit} style={{ marginTop: 12, display: "grid", gap: 10, textAlign: "left" }}>
                 <label style={{ display: "grid", gap: 6 }}>
-                  <span style={{ fontWeight: 600 }}>Email o usuario</span>
+                  <span style={{ fontWeight: 600 }}>Email</span>
                   <input
-                    type="text"
+                    type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="usuario o tuemail@dominio.com"
+                    placeholder="tuemail@dominio.com"
                     style={{
                       padding: "12px 14px",
                       borderRadius: 12,
@@ -113,9 +95,8 @@ const AreaPaciente: React.FC = () => {
                   />
                 </label>
                 <button className="button" type="submit" style={{ marginTop: 6 }}>
-                  {loading ? "Ingresando…" : "Ingresar"}
+                  Ingresar
                 </button>
-                {error && <div style={{ color: "#b00020" }}>{error}</div>}
               </form>
               <div style={{ marginTop: 10, fontSize: ".95rem", textAlign: "center", color: "#555" }}>
                 ¿No tenés cuenta? {" "}
