@@ -81,13 +81,13 @@ const AreaPaciente: React.FC = () => {
               <h3 style={{ margin: 0, color: "var(--color-primary)" }}>Iniciar sesión</h3>
               <form onSubmit={onSubmit} style={{ marginTop: 12, display: "grid", gap: 10, textAlign: "left" }}>
                 <label style={{ display: "grid", gap: 6 }}>
-                  <span style={{ fontWeight: 600 }}>Email</span>
+                  <span style={{ fontWeight: 600 }}>Email o usuario</span>
                   <input
-                    type="email"
+                    type="text"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="tuemail@dominio.com"
+                    placeholder="usuario o tuemail@dominio.com"
                     style={{
                       padding: "12px 14px",
                       borderRadius: 12,
