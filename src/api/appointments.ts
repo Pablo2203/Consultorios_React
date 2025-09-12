@@ -22,17 +22,20 @@ export interface AppointmentRequestResponse {
   id: string | number;
 }
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || "";
+const API_BASE_RAW = (import.meta as any).env?.VITE_API_BASE_URL ?? "";
+const API_BASE = (typeof API_BASE_RAW === "string" ? API_BASE_RAW.trim() : "");
 
-function getBaseUrl(): string {
-  // Allow relative paths in dev if env not set
-  return API_BASE || "/";
+function url(path: string) {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  if (!API_BASE) return p;
+  const base = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
+  return `${base}${p}`;
 }
 
 export async function createAppointmentRequest(
   data: AppointmentRequestInput
 ): Promise<AppointmentRequestResponse> {
-  const res = await fetch(new URL("api/appointments/requests", getBaseUrl()).toString(), {
+  const res = await fetch(url("/api/appointments/requests"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -78,4 +81,3 @@ export function mapEspecialidadToEnum(value?: string | null): Specialty | null {
       return null;
   }
 }
-

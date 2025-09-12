@@ -1,5 +1,6 @@
 .header {
   position: relative;
+  z-index: 1000; /* keep header above page content for dropdown */
   height: 120px;
   color: #fff;
   background-image: url('./assets/watermark.png');
@@ -21,7 +22,10 @@
   z-index: 2;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   height: 100%;
+  padding: 0 12px;
 }
 
 /* Link clickeable para volver al inicio */
@@ -36,3 +40,16 @@
 @media (max-width: 768px) {
   .header { height: 160px; }
 }
+
+.logout-link {
+  position: relative;
+  margin-right: 16px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--color-primary, #1976d2);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.logout-link:hover { filter: brightness(0.95); }

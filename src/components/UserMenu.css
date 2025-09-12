@@ -1,0 +1,13 @@
+.user-menu { position: relative; display: flex; align-items: center; margin-left: auto; }
+.user-menu__btn { border: none; background: transparent; cursor: pointer; padding: 4px; border-radius: 999px; }
+.user-menu__btn:hover { background: rgba(0,0,0,0.06); }
+.user-menu__icon { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: block; }
+.user-menu__dropdown {
+  position: absolute; top: 48px; right: 0; min-width: 220px; background: #fff;
+  border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  display: grid; padding: 8px; z-index: 10000; /* ensure overlay above all */
+}
+.user-menu__item { padding: 10px 12px; color: #222; text-decoration: none; border-radius: 8px; }
+.user-menu__item:hover { background: #f5f5f5; }
+.user-menu__logout { color: #b00020; }
+.user-menu__login { padding: 8px 12px; border-radius: 8px; text-decoration: none; background: var(--color-primary, #1976d2); color: #fff; font-weight: 600; }
