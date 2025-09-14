@@ -1,69 +1,49 @@
-# React + TypeScript + Vite
+## Consultorios – Frontend (React / Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Description
+Single Page Application for a medical appointments platform with three roles:
+- ADMIN: manage users, approve professionals, and view/edit professionals’ calendars.
+- PROFESSIONAL: manage personal profile, agenda (create/update/cancel appointments), and export agenda.
+- PATIENT: register, confirm email, view and cancel own appointments.
 
-Currently, two official plugins are available:
+### Technologies
+- React 18 + TypeScript
+- Vite (dev server/build)
+- React Router
+- Fetch API
+- CSS styles (App.css and page-specific styles)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Requirements
+- Node.js 18+
+- npm 9+
 
-## Expanding the ESLint configuration
+### Installation
+1. Clone the repository
+   - `git clone <your-repo-url>`
+2. Go to frontend folder
+   - `cd Consultorios_React`
+3. Install dependencies
+   - `npm install`
+4. Configure API base URL (dev): create `.env.local` with
+   - `VITE_API_BASE_URL=http://localhost:8080`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Run
+- Development: `npm run dev` (default: http://localhost:5173)
+- Production build: `npm run build`
+- Preview built app: `npm run preview`
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Login persists JWT and roles in `localStorage` to render role-based menus.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Deployment
+1. Build the app: `npm run build` (outputs to `dist/`)
+2. Serve `dist/` with a static server (Nginx, Apache, CDN, or `vite preview`)
+3. Ensure the backend URL is provided via `VITE_API_BASE_URL`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Contributions
+Contributions are welcome!
+1. Fork the repository
+2. Create a branch: `git checkout -b feature/NewFeature`
+3. Commit: `git commit -m "feat: add NewFeature"`
+4. Push: `git push origin feature/NewFeature`
+5. Open a Pull Request
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
