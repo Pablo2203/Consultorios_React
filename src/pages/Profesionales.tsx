@@ -13,6 +13,8 @@ type Profesional = {
   nombre: string;
   estudios: string;
   experiencia: string;
+  telefono?: string;
+  email?: string;
   obrasSociales?: string[];
 };
 
@@ -23,11 +25,18 @@ const profesionalesData: Record<SpecialtyKey, Profesional[]> = {
       nombre: "Virginia San Joaquín",
       estudios: "Profesional graduada en la UBA",
       experiencia: "Más de 30 años de experiencia",
+      telefono: "+54 11 4296-4063",
+      email: "virginia@example.com",
       obrasSociales: ["OSDE"],
     },
+    { id: "pepito", nombre: "Pepito Gómez", estudios: "Lic. en Psicología (UBA)", experiencia: "10 años en clínica", telefono: "+54 11 4000-1111", email: "pepito@consultorios.com" },
   ],
-  psiquiatria: [],
-  cardiologia: [],
+  psiquiatria: [
+    { id: "mengano", nombre: "Dr. Mengano Pérez", estudios: "Médico Psiquiatra (UBA)", experiencia: "15 años en salud mental", telefono: "+54 11 4000-2222", email: "mengano@consultorios.com" },
+  ],
+  cardiologia: [
+    { id: "fulano", nombre: "Dr. Fulano Rodríguez", estudios: "Cardiólogo (UBA)", experiencia: "12 años en cardiología clínica", telefono: "+54 11 4000-3333", email: "fulano@consultorios.com" },
+  ],
 };
 
 const labels: Record<SpecialtyKey, string> = {
@@ -128,6 +137,16 @@ const Profesionales: React.FC = () => {
                       <p style={{ margin: ".25rem 0" }}>
                         <strong>Experiencia:</strong> {p.experiencia}
                       </p>
+                      {p.telefono && (
+                        <p style={{ margin: ".25rem 0" }}>
+                          <strong>Teléfono:</strong> {p.telefono}
+                        </p>
+                      )}
+                      {p.email && (
+                        <p style={{ margin: ".25rem 0" }}>
+                          <strong>Email:</strong> {p.email}
+                        </p>
+                      )}
                       {p.obrasSociales?.length ? (
                         <p style={{ margin: ".25rem 0" }}>
                           <strong>Obras sociales:</strong> {p.obrasSociales.join(", ")}

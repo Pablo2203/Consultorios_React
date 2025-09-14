@@ -71,8 +71,9 @@ const UserMenu: React.FC = () => {
           {isAdmin && (
             <>
               <Link to="/admin/appointments" className="user-menu__item">Turnos</Link>
-              <Link to="/admin/professionals" className="user-menu__item">Profesionales</Link>
-              <Link to="/admin/pending" className="user-menu__item">Pendientes</Link>
+              <Link to="/admin/calendar" className="user-menu__item">Calendario</Link>
+              <Link to="/admin/users" className="user-menu__item">Usuarios</Link>
+              <Link to="/admin/pending" className="user-menu__item">Aprobaciones Pendientes</Link>
             </>
           )}
           {isPro && (

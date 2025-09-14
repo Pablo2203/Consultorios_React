@@ -14,7 +14,7 @@
 
 .reserva-wrap{
   width: min(100%, 520px);
-  margin: 0 auto;
+  margin: 30px auto;
   padding-top: 4px;
   padding-bottom: 24px;
   display: grid;

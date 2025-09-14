@@ -45,10 +45,11 @@ const Registro: React.FC = () => {
     try {
       setLoading(true);
       await register({ username: usuario.trim(), email: email.trim(), password, roleWanted: role });
+      const baseMsg = 'Te enviamos un correo para confirmar tu cuenta. Revisá tu bandeja y seguí el enlace para activarla.';
       if (role === 'PROFESSIONAL') {
-        setSuccess("Registro enviado. Tu perfil profesional quedará pendiente de aprobación por el administrador.");
+        setSuccess("Registro enviado. Tu perfil profesional quedará pendiente de aprobación por el administrador. " + baseMsg);
       } else {
-        setSuccess("Cuenta creada con éxito. Ya podés iniciar sesión desde el icono de usuario.");
+        setSuccess("Cuenta creada con éxito. " + baseMsg);
       }
       // limpiar campos
       setPassword(""); setConfirm("");
@@ -91,7 +92,7 @@ const Registro: React.FC = () => {
           </p>
         </div>
 
-        {!logged && (
+        {!logged && !success && (
         <div style={{ maxWidth: 560, margin: "0 auto", paddingLeft: "120px", width: "100%", alignItems: "center"  }}>
           <div className="card" style={{ padding: 24, alignItems: "center" }}>
             <h3 style={{ margin: 0, color: "var(--color-primary)" }}>Registro</h3>

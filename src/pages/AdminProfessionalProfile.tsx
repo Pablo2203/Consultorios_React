@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../Header";
+import Footer from "../components/Footer";
 import { getProfileByAdmin, updateProfileByAdmin, uploadPhotoByAdmin, type ProfessionalProfile } from "../api/professional";
 
 const AdminProfessionalProfile: React.FC = () => {
   const { userId } = useParams();
   const uid = Number(userId);
+  const navigate = useNavigate();
   const [data, setData] = useState<ProfessionalProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,8 +57,9 @@ const AdminProfessionalProfile: React.FC = () => {
   return (
     <div style={{ minHeight: "100%" }}>
       <Header />
-      <section className="section-gradient" style={{ padding: 16, display: "flex", justifyContent: "center" }}>
-        <form onSubmit={onSubmit} className="card" style={{ padding: 24, width: 680, display: "grid", gap: 12 }}>
+      <section className="section-gradient" style={{padding: '120px 16px 32px', display: "flex", justifyContent: "center", minHeight: '90vh' }}>
+        <div className="reserva-wrap" style={{ width: '100%', maxWidth: 720, marginTop: 60 }}>
+        <form onSubmit={onSubmit} className="card" style={{ padding: 24, width: 680, display: "grid", gap: 12, margin: '0 auto' }}>
           <h2>Perfil Profesional</h2>
           {loading && <div>Cargando…</div>}
           {error && <div style={{ color: "#b00020" }}>{error}</div>}
@@ -95,11 +98,18 @@ const AdminProfessionalProfile: React.FC = () => {
                   <img src={data.photoUrl} alt="Foto" style={{ width: 120, height: 120, objectFit: "cover", borderRadius: 8 }} />
                 )}
               </label>
-              <button className="button" type="submit" disabled={loading}>{loading ? "Guardando…" : "Guardar"}</button>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+                <button className="button" type="submit" disabled={loading}>{loading ? "Guardando…" : "Guardar"}</button>
+                <button type="button" className="button" onClick={() => navigate(-1)} style={{ background: '#ffffff', color: 'var(--color-primary)' }}>
+                  Atrás
+                </button>
+              </div>
             </>
           )}
         </form>
+        </div>
       </section>
+      <Footer />
     </div>
   );
 };

@@ -82,8 +82,9 @@ export interface ProfessionalSummary {
   email?: string;
 }
 
-export async function getProfessionals(): Promise<ProfessionalSummary[]> {
-  const res = await fetch(url("/api/admin/professionals"), {
+export async function getProfessionals(specialty?: string): Promise<ProfessionalSummary[]> {
+  const path = specialty ? `/api/admin/professionals?specialty=${encodeURIComponent(specialty)}` : "/api/admin/professionals";
+  const res = await fetch(url(path), {
     credentials: "include",
     headers: { ...authHeaders() },
   });
@@ -107,4 +108,65 @@ export async function getAppointmentsByProfessional(
 export function exportAppointmentsCsvByAdmin(userId: number, fromIso: string, toIso: string) {
   const u = url(`/api/admin/professionals/${userId}/appointments/export?from=${encodeURIComponent(fromIso)}&to=${encodeURIComponent(toIso)}`);
   window.open(u, "_blank");
+}
+
+// Crear/actualizar/cancelar (admin)
+export async function createAppointmentDirect(body: {
+  professionalId: number;
+  specialty: string;
+  startsAt: string;
+  endsAt?: string | null;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  coverageType?: string;
+  healthInsurance?: string;
+  healthPlan?: string;
+  affiliateNumber?: string;
+  subject?: string;
+  message?: string;
+}) {
+  const res = await fetch(url('/api/admin/appointments'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} creando turno`);
+  return res.json();
+}
+
+export async function updateAppointmentByAdmin(id: number, body: { startsAt: string; endsAt?: string | null; status: string; notes?: string; email?: string }) {
+  const res = await fetch(url(`/api/admin/appointments/${id}`), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} actualizando turno`);
+  return res.json();
+}
+
+export async function cancelAppointmentByAdmin(id: number) {
+  const res = await fetch(url(`/api/admin/appointments/${id}/cancel`), {
+    method: 'PATCH',
+    headers: { ...authHeaders() },
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} cancelando turno`);
+}
+
+// Usuarios (admin)
+export type UserSummary = { id: number; username: string; email?: string; enabled: boolean; role: string };
+
+export async function getAllUsers(): Promise<UserSummary[]> {
+  const res = await fetch(url('/api/admin/users'), { credentials: 'include', headers: { ...authHeaders() } });
+  if (!res.ok) throw new Error(`Error ${res.status} listando usuarios`);
+  return res.json();
+}
+
+export async function deleteUser(id: number): Promise<void> {
+  const res = await fetch(url(`/api/admin/users/${id}`), { method: 'DELETE', credentials: 'include', headers: { ...authHeaders() } });
+  if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status} eliminando usuario`);
 }

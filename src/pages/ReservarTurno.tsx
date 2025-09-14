@@ -4,6 +4,7 @@ import Header from "../Header";
 import "../App.css";
 import "./reserva.css";
 import asistente_aplauso from "../assets/asistente_aplaudiendo_vp9alpha.webm";
+import { getProfessionals, type ProfessionalSummary } from "../api/admin";
 
 const OBRAS_SOCIALES = [
   "OSDE",
@@ -26,11 +27,14 @@ const OBRAS_SOCIALES = [
 type TipoCobertura = "obra" | "particular";
 type Especialidad = "Psiquiatría" | "Psicología" | "Cardiología";
 
-const PROFESIONALES: Record<Especialidad, string[]> = {
-  "Psiquiatría": ["Fabian Lamaison", "Paula Garofalo"],
-  "Psicología": ["Virginia San Joaquin"],
-  "Cardiología": ["Pepito Flores"],
-};
+function toBackendSpecialty(label: Especialidad | ""): string | null {
+  switch (label) {
+    case "Psicología": return "PSICOLOGIA";
+    case "Psiquiatría": return "PSIQUIATRIA";
+    case "Cardiología": return "CARDIOLOGIA";
+    default: return null;
+  }
+}
 
 const ReservarTurno: React.FC = () => {
   const [tipo, setTipo] = useState<TipoCobertura>("obra");
@@ -44,10 +48,16 @@ const ReservarTurno: React.FC = () => {
 
   const esObra = tipo === "obra";
   const obraOptions = useMemo(() => OBRAS_SOCIALES, []);
-  const profesionalesOptions = useMemo(
-    () => (especialidad ? PROFESIONALES[especialidad] : []),
-    [especialidad]
-  );
+  const [proOptions, setProOptions] = useState<ProfessionalSummary[]>([]);
+
+  React.useEffect(() => {
+    const spec = toBackendSpecialty(especialidad);
+    if (!spec) { setProOptions([]); return; }
+    (async () => {
+      try { setProOptions(await getProfessionals(spec)); }
+      catch { setProOptions([]); }
+    })();
+  }, [especialidad]);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -217,9 +227,9 @@ const ReservarTurno: React.FC = () => {
                   >
                     <option value="">-- Elegí el profesional --</option>
                     <option value="Cualquiera">Cualquiera</option>
-                    {profesionalesOptions.map((p) => (
-                      <option key={p} value={p}>
-                        {p}
+                    {proOptions.map((p) => (
+                      <option key={p.id} value={p.username}>
+                        {p.username} {p.email ? `(${p.email})` : ""}
                       </option>
                     ))}
                   </select>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Header";
+import Footer from "../components/Footer";
 import { getMyProfile, updateMyProfile, uploadMyPhoto, type ProfessionalProfile } from "../api/professional";
 
 const ProfessionalProfilePage: React.FC = () => {
@@ -50,10 +51,11 @@ const ProfessionalProfilePage: React.FC = () => {
   };
 
   return (
-    <div style={{ minHeight: "100%" }}>
+    <div style={{ minHeight: "100vh", display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <section className="section-gradient" style={{ padding: 16, display: "flex", justifyContent: "center" }}>
-        <form onSubmit={onSubmit} className="card" style={{ padding: 24, width: 680, display: "grid", gap: 12 }}>
+      <section className="section-gradient" style={{ padding: '120px 16px 32px', display: "flex", justifyContent: "center", minHeight: '90vh' }}>
+        <div className="reserva-wrap" style={{ width: '100%', maxWidth: 720 }}>
+        <form onSubmit={onSubmit} className="card" style={{ padding: 24, width: 680, display: "grid", gap: 12, margin: '0 auto' }}>
           <h2>Mi Perfil Profesional</h2>
           {loading && <div>Cargando…</div>}
           {error && <div style={{ color: "#b00020" }}>{error}</div>}
@@ -96,7 +98,9 @@ const ProfessionalProfilePage: React.FC = () => {
             </>
           )}
         </form>
+        </div>
       </section>
+      <Footer />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "../Header";
+import Footer from "../components/Footer";
 import type { AppointmentResponse, ProfessionalSummary } from "../api/admin";
 import { getRequestedAppointments, scheduleAppointment, getWhatsAppTemplate, getProfessionals } from "../api/admin";
 
@@ -22,6 +23,9 @@ const AdminAppointments: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [scheduleStates, setScheduleStates] = useState<Record<number, ScheduleState>>({});
   const [professionals, setProfessionals] = useState<ProfessionalSummary[]>([]);
+  // Filtros por especialidad y profesional
+  const [filterSpecialty, setFilterSpecialty] = useState<string>('');
+  const [filterProfessionalId, setFilterProfessionalId] = useState<string>('');
 
   useEffect(() => {
     let cancelled = false;
@@ -30,7 +34,7 @@ const AdminAppointments: React.FC = () => {
         setLoading(true);
         const [data, pros] = await Promise.all([
           getRequestedAppointments(),
-          getProfessionals().catch(() => [] as ProfessionalSummary[]),
+          getProfessionals(filterSpecialty || undefined).catch(() => [] as ProfessionalSummary[]),
         ]);
         setProfessionals(pros);
         if (!cancelled) setItems(data);
@@ -43,7 +47,12 @@ const AdminAppointments: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [filterSpecialty]);
+
+  // Filtros por especialidad/profesional aplicados en content
+  // Especialidades del backend (enum)
+  const specialties = ["PSICOLOGIA","PSIQUIATRIA","NUTRICION","FONOAUDIOLOGIA","CARDIOLOGIA"];
+  // const preferreds = Array.from(new Set(items.map(i => i.preferredProfessional).filter(Boolean))) as string[];
 
   const onChangeField = (id: number, field: keyof ScheduleState, value: string | boolean | undefined) => {
     setScheduleStates((prev) => ({
@@ -93,23 +102,32 @@ const AdminAppointments: React.FC = () => {
   const content = useMemo(() => {
     if (loading) return <div style={{ padding: 16 }}>Cargando…</div>;
     if (error) return <div style={{ color: "#b00020", padding: 16 }}>{error}</div>;
-    if (!items.length) return <div style={{ padding: 16 }}>No hay solicitudes pendientes.</div>;
+    // aplicar filtros
+    let filtered = items;
+    if (filterSpecialty) filtered = filtered.filter(i => String(i.specialty) === filterSpecialty);
+    if (filterProfessionalId) {
+      const pro = professionals.find(p => String(p.id) === filterProfessionalId);
+      if (pro) {
+        filtered = filtered.filter(i => (i.preferredProfessional || '').toLowerCase().includes(String(pro.username).toLowerCase()));
+      }
+    }
+    if (!filtered.length) return <div style={{ padding: 16 }}>No hay solicitudes pendientes.</div>;
     return (
       <div style={{ display: "grid", gap: 16 }}>
-        {items.map((a) => {
+        {filtered.map((a) => {
           const st = scheduleStates[a.id] || { professionalId: "", startsAt: "", loading: false };
           return (
-            <div key={a.id} className="card" style={{ padding: 16 }}>
+            <div key={a.id} className="card" style={{ padding: 16, textAlign: 'center' }}>
               <div style={{ fontWeight: 700, marginBottom: 8 }}>
                 {a.firstName} {a.lastName} • {a.phone || "(sin teléfono)"}
               </div>
-              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 8 }}>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 8, justifyContent: 'center' }}>
                 <div>Especialidad: {a.specialty}</div>
                 <div>Cobertura: {a.coverageType || "-"} {a.healthInsurance ? `(${a.healthInsurance})` : ""}</div>
                 {a.preferredProfessional && <div>Prefiere: {a.preferredProfessional}</div>}
               </div>
 
-              <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", justifyContent: 'center' }}>
                 {professionals.length > 0 ? (
                   <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     <span>Profesional</span>
@@ -163,15 +181,35 @@ const AdminAppointments: React.FC = () => {
   }, [items, loading, error, scheduleStates]);
 
   return (
-    <div style={{ minHeight: "100%" }}>
+    <div style={{ minHeight: "100vh", display: 'flex', flexDirection: 'column' }}>
       <Header />
-      <section className="section-gradient" style={{ padding: "32px 16px" }}>
+      <section className="section-gradient" style={{ padding: "24px 16px", flex: 1 }}>
         <div className="reserva-wrap">
           <h2>Solicitudes de turnos</h2>
+          <div className="card" style={{ padding: 12, marginBottom: 12, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center', textAlign: 'center' }}>
+            <label style={{ display: 'grid', gap: 4 }}>
+              <span>Filtrar por especialidad</span>
+              <select value={filterSpecialty} onChange={e=>setFilterSpecialty(e.target.value)}>
+                <option value="">Todas</option>
+                {specialties.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </label>
+            <label style={{ display: 'grid', gap: 4 }}>
+              <span>Filtrar por profesional</span>
+              <select value={filterProfessionalId} onChange={e=>setFilterProfessionalId(e.target.value)}>
+                <option value="">Todos</option>
+                {professionals.map(p => <option key={p.id} value={String(p.id)}>{p.username} {p.email ? `(${p.email})` : ''}</option>)}
+              </select>
+            </label>
+            {(filterSpecialty || filterProfessionalId) && (
+              <button className="button" onClick={()=>{setFilterProfessionalId(''); setFilterSpecialty('')}}>Limpiar filtros</button>
+            )}
+          </div>
           <p>Administra y agenda las solicitudes realizadas desde la web.</p>
           {content}
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

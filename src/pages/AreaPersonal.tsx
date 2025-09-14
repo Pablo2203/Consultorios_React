@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import "../App.css";
 import "./area-personal.css";
@@ -14,6 +15,17 @@ const AreaPaciente: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const isLogged = typeof localStorage !== 'undefined' && !!localStorage.getItem('ADMIN_TOKEN');
+
+  useEffect(() => {
+    // si está logueado, no mostrar el formulario, solo mensaje breve
+    if (isLogged) {
+      setSuccess("Ya estás logueado. Usá el icono de usuario para acceder a tus opciones.");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +38,9 @@ const AreaPaciente: React.FC = () => {
       localStorage.setItem("ADMIN_ROLES", JSON.stringify(res.roles || []));
       // notificar al header/menú para que se actualice sin refrescar
       try { window.dispatchEvent(new Event("auth-updated")); } catch {}
-      setSuccess("Te has logueado con éxito. Usá el icono de usuario para acceder a tus opciones.");
+      // redirigir al inicio
+      navigate('/');
+      return;
     } catch (e: any) {
       setError(e?.message || "Credenciales inválidas");
     } finally {
@@ -75,7 +89,7 @@ const AreaPaciente: React.FC = () => {
               : "Ingresá con tu email y contraseña o registrate para comenzar."}
           </p>
 
-          {/* Login dentro del área turquesa, centrado */}
+          {/* Login solo si no está logueado */}
           {!success && (
             <div style={{ width: "100%", maxWidth: 520}}>
               <div className="card" style={{ padding: 10, textAlign: "center" }}>
@@ -118,11 +132,18 @@ const AreaPaciente: React.FC = () => {
                   </button>
                   {error && <div style={{ color: "#b00020" }}>{error}</div>}
                 </form>
-                <div style={{ marginTop: 10, fontSize: ".95rem", textAlign: "center", color: "#555" }}>
-                  ¿No tenés cuenta? {" "}
-                  <Link to="/registro" style={{ color: "var(--color-primary)", fontWeight: 700 }}>
-                    Registrarme
-                  </Link>
+                <div style={{ marginTop: 10, fontSize: ".95rem", textAlign: "center", color: "#555", display: 'grid', gap: 4 }}>
+                  <div>
+                    ¿No tenés cuenta? {" "}
+                    <Link to="/registro" style={{ color: "var(--color-primary)", fontWeight: 700 }}>
+                      Registrarme
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to="/olvide-password" style={{ color: "var(--color-primary)", fontWeight: 700 }}>
+                      Olvidé mi contraseña
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

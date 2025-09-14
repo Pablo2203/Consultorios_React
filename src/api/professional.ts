@@ -66,6 +66,52 @@ export async function getMyProfile(): Promise<ProfessionalProfile> {
   return res.json();
 }
 
+// Gestion de turnos directos por profesional
+export async function createMyAppointmentDirect(body: {
+  specialty: string;
+  startsAt: string;
+  endsAt?: string | null;
+  firstName: string;
+  lastName: string;
+  email?: string;
+  phone?: string;
+  coverageType?: string;
+  healthInsurance?: string;
+  healthPlan?: string;
+  affiliateNumber?: string;
+  subject?: string;
+  message?: string;
+}) {
+  const res = await fetch(url(`/api/professional/appointments`), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} creando turno`);
+  return res.json();
+}
+
+export async function updateMyAppointment(id: number, body: { startsAt: string; endsAt?: string | null; status: string; notes?: string }) {
+  const res = await fetch(url(`/api/professional/appointments/${id}`), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} actualizando turno`);
+  return res.json();
+}
+
+export async function cancelMyAppointmentPro(id: number) {
+  const res = await fetch(url(`/api/professional/appointments/${id}/cancel`), {
+    method: 'PATCH',
+    headers: { ...authHeaders() },
+    credentials: 'include',
+  });
+  if (!res.ok) throw new Error(`Error ${res.status} cancelando turno`);
+}
+
 export async function updateMyProfile(body: ProfessionalProfileRequest): Promise<ProfessionalProfile> {
   const res = await fetch(url(`/api/professional/me/profile`), {
     method: "PUT",

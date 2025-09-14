@@ -44,3 +44,37 @@ export async function register(data: RegisterRequest): Promise<void> {
     throw new Error(`Registro falló (${res.status}): ${t}`);
   }
 }
+
+export async function requestPasswordReset(email: string): Promise<void> {
+  const res = await fetch(url('/auth/forgot-password'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(() => '');
+    throw new Error(t || `No se pudo solicitar el reseteo (${res.status})`);
+  }
+}
+
+export async function resetPassword(token: string, newPassword: string): Promise<void> {
+  const res = await fetch(url('/auth/reset-password'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, password: newPassword }),
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(() => '');
+    throw new Error(t || `No se pudo restablecer la contraseña (${res.status})`);
+  }
+}
+
+export async function confirmEmail(token: string): Promise<void> {
+  const res = await fetch(url(`/auth/confirm-email?token=${encodeURIComponent(token)}`), {
+    method: 'GET',
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(() => '');
+    throw new Error(t || `No se pudo confirmar el email (${res.status})`);
+  }
+}
