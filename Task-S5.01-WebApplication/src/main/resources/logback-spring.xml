@@ -8,26 +8,7 @@
         </encoder>
     </appender>
 
-    <!-- Root logger to console for all environments (safe for tests) -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
-
-    <!-- Optional file appender: only active on selected profiles (e.g., prod) -->
-    <springProfile name="prod,file">
-        <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>logs/app.log</file>
-            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>logs/app.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
-                <maxHistory>14</maxHistory>
-            </rollingPolicy>
-            <encoder>
-                <pattern>${LOG_PATTERN}</pattern>
-            </encoder>
-        </appender>
-        <root level="INFO">
-            <appender-ref ref="STDOUT"/>
-            <appender-ref ref="FILE"/>
-        </root>
-    </springProfile>
 </configuration>
